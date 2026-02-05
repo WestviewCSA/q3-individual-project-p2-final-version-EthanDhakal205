@@ -1,3 +1,19 @@
 Questions:
 
 Write as many questions as you can based on the project specs.
+
+[o]1. When do we have to submit the project?
+[o]2. What does the "maze level" mean?
+[c]3. Can we use an already implemented stack and queue library/class?
+[o]4. Can we use algortihms that already exist for figuring out which path is best? 
+[c]5. Does the code have to work in every single scenario given to get full credit for the project?
+[c]6. Can we use other data structures that are not the stacks and queues for the code?
+[c/o]7. Is there a specific limit in the runtime to get full credit and if this is not false, then what is it? 
+[c]8. Can you get full credit if the algorithm takes a very long time, but gets the right answer?
+[c]9. If you were to get all of the original credit and you also get the extra credit done, can you get more than a 100%?
+[c]10. Do we need to create our own tests or will they be given?
+[o]11. How many commits and pushes do we need to make to get full credit?
+[c]12. If you finish this in only a few days and less than the given time, do you need to continue committing and pushing code to get credit?
+[o]13. How should I start the project for the design plan?
+[c]14. Is finding every single possible route until finally getting the right path allowed?
+[c]15. Does there need to be comments that explain what each group of lines of code does?
