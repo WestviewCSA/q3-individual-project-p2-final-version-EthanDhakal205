@@ -1,0 +1,78 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class MapReading {
+
+	public static void main(String[] args) throws FileNotFoundException {
+          String[][][] map = getTextBasedMap("src/Easy.txt");
+          printMap(map);
+          String[][][] secondmap = getCoordinateBasedMap("src/coordinate.txt");
+          printMap(secondmap);
+	}
+	
+	public static String[][][] getTextBasedMap(String fileName) throws FileNotFoundException {
+		File file = new File(fileName);
+        Scanner scanner = new Scanner(file);
+        int rows = scanner.nextInt();
+        int columns = scanner.nextInt();
+        int levels = scanner.nextInt();
+        
+        String[][][] mapping = new String[levels][rows][columns];
+        for(int i = 0; i<levels; i++) {
+        	for(int j = 0; j<rows; j++) {
+        		String line = scanner.next();
+        		for(int h = 0; h<columns; h++) {
+        			mapping[i][j][h] = line.substring(h,h+1);
+        		}
+        	}
+        }
+        scanner.close();
+        return mapping;
+		
+	}
+	public static String[][][] getCoordinateBasedMap(String fileName) throws FileNotFoundException {
+		File file = new File(fileName);
+        Scanner scanner = new Scanner(file);
+        int rows = scanner.nextInt();
+        int columns = scanner.nextInt();
+        int levels = scanner.nextInt();
+        
+        String[][][] mapping = new String[levels][rows][columns];
+        
+        
+        while(scanner.hasNext()) {
+        	String hi = scanner.next();
+        	int row = Integer.parseInt(scanner.next());
+        	int column = Integer.parseInt(scanner.next());
+        	int level = Integer.parseInt(scanner.next());
+        	
+        	mapping[level][row][column] = hi;
+        }
+        
+        for(int i = 0; i<levels; i++) {
+        	for(int j = 0; j<rows; j++) {
+        		String line = scanner.next();
+        		for(int h = 0; h<columns; h++) {
+        			if(mapping[i][j][h] == null) {
+        				mapping[i][j][h] = ".";
+        			}
+        		}
+        	}
+        }
+        scanner.close();
+        return mapping;
+		
+	}
+	public static void printMap(String[][][] map) {
+		for(int i = 0; i<map.length; i++) {
+			for(int j = 0; j<map[i].length; j++) {
+				for(int h = 0; h<map[i][j].length; h++) {
+					System.out.print(map[i][j][h]);
+				}
+				System.out.println();				
+			}
+		}
+	} 
+
+}
