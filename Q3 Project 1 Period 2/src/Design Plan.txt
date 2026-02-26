@@ -2,6 +2,7 @@ Week 1:
 1. Create easy, medium, and hard/harder text maps.
 2. Create different coordinate-based maps.
 3. Be able to read maps from files and store them in a data structure.
+4. Create code that can see if there are any issues with the map, such as illegal characters.
 
 Week 2:
 1. Create and finish the queue-based algorithm for storing the points into the "visited" stack.
@@ -18,3 +19,4 @@ Week 4:
 2. Fix any errors in the code.
 3. Make sure everything, such as the command line arguments, works correctly.
 4. Test the test cases and test the amount of time it takes for the code to run when using different data structures and when met with different maps.
+
