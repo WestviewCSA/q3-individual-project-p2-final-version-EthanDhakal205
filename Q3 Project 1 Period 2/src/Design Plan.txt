@@ -1,0 +1,20 @@
+Week 1:
+1. Create easy, medium, and hard/harder text maps.
+2. Create different coordinate-based maps.
+3. Be able to read maps from files and store them in a data structure.
+
+Week 2:
+1. Create and finish the queue-based algorithm for storing the points into the "visited" stack.
+2. Create and finish the stack-based algorithm for storing the points into the "visited" queue.
+3. Finish the code that has to do with the command line arguments.
+
+Week 3:
+1. Figure out how to create a backtracking algorithm once the "visited" data is stored in the stack or queue.
+2. If the backtracking algorithm is figured out, start implementing the backtracking algorithm.
+3. Create multiple test cases.
+
+Week 4:
+1. Finish the backtracking algorithm.
+2. Fix any errors in the code.
+3. Make sure everything, such as the command line arguments, works correctly.
+4. Test the test cases and test the amount of time it takes for the code to run when using different data structures and when met with different maps.
