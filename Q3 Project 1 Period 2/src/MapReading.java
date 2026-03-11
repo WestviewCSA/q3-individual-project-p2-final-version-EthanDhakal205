@@ -3,64 +3,49 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MapReading {
-
-	public static void main(String[] args) throws FileNotFoundException {
-          String[][][] map = getTextBasedMap("src/Easy.txt");
-          printMap(map);
-          String[][][] secondmap = getCoordinateBasedMap("src/coordinate.txt");
-          System.out.println(" ");
-          printMap(secondmap);
-
-		boolean queueBase = false;
-          boolean stackBase = false;
-          boolean optimal = false;
-          boolean showTime = false;
-          boolean inCoord = false;
-          boolean outCoord = false;
-          
-          for(String arg : args) {
-        	  if(arg.equals("--Stack")) {
-        		  stackBase = true;
-        	  }
-        	  if(arg.equals("--Queue")) {
-        		  queueBase = true;
-        	  }
-        	  if(arg.equals("--Opt")) {
-        		  optimal = true;
-        	  }
-        	  if(arg.equals("--Time")) {
-        		  showTime = true;
-        	  }
-        	  if(arg.equals("--Incoordinate")) {
-        		  inCoord = true;
-        	  }
-        	  if(arg.equals("--Outcoordinate")) {
-
-        		  outCoord = true;
-        	  }
-        	  if(arg.equals("--Help")) {
-        		  System.out.println("Help");
-        	  }
-          }
-          
-          if(stackBase== true && queueBase==true) {
-        	  System.exit(-1);
-          }
-	}
+	private static final String fine_char = ".@W$|+";
 	
-	public static String[][][] getTextBasedMap(String fileName) throws FileNotFoundException {
+	public static String[][][] getTextBasedMap(String fileName) throws FileNotFoundException, IncorrectMapFormatException, IncompleteMapException, IllegalMapCharactersException {
 		File file = new File(fileName);
         Scanner scanner = new Scanner(file);
+		if(!scanner.hasNextInt()) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Does not work.");
+		}
         int rows = scanner.nextInt();
+		if(!scanner.hasNextInt()) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Does not work.");
+		}
         int columns = scanner.nextInt();
+		if(!scanner.hasNextInt()) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Does not work.");
+		}
         int levels = scanner.nextInt();
-        
+        if(rows<=0 || columns<=0 || levels<=0) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Map dimensions must be positive int.");
+		}
         String[][][] mapping = new String[levels][rows][columns];
         for(int i = 0; i<levels; i++) {
         	for(int j = 0; j<rows; j++) {
+				if(!scanner.hasNext()) {
+					scanner.close();
+					throw new IncompleteMapException("Not enough rows");
+				}
         		String line = scanner.next();
+				if(line.length()<columns) {
+					scanner.close();
+					throw new IncompleteMapException("Row doesn't match given size");
+				}
         		for(int h = 0; h<columns; h++) {
-        			mapping[i][j][h] = line.substring(h,h+1);
+        			String character = line.substring(h,h+1);
+					if(!fine_char.contains(character)) {
+						scanner.close();
+						throw new IllegalMapCharacterException("Character doesn't work");
+					}
+					mapping[i][j][h]=character;
         		}
         	}
         }
@@ -71,20 +56,54 @@ public class MapReading {
 	public static String[][][] getCoordinateBasedMap(String fileName) throws FileNotFoundException {
 		File file = new File(fileName);
         Scanner scanner = new Scanner(file);
+		if(!scanner.hasNextInt()) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Does not work.");
+		}
         int rows = scanner.nextInt();
+		if(!scanner.hasNextInt()) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Does not work.");
+		}
         int columns = scanner.nextInt();
+		if(!scanner.hasNextInt()) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Does not work.");
+		}
         int levels = scanner.nextInt();
-        
+        if(rows<=0 || columns<=0 || levels<=0) {
+			scanner.close();
+			throw new IncorrectMapFormatException("Map dimensions must be positive int.");
+		}
         String[][][] mapping = new String[levels][rows][columns];
         
         
         while(scanner.hasNext()) {
-        	String hi = scanner.next();
+        	String character = scanner.next();
+			if(!fine_char.contains(character)) {
+				scanner.close();
+				throw new IllegalMapCharacterException("Character doesn't work");
+			}
+			if(!scanner.hasNextInt()) {
+				scanner.close();
+				break;
+			}
         	int row = Integer.parseInt(scanner.next());
+			if(!scanner.hasNextInt()) {
+				scanner.close();
+				break;
+			}
         	int column = Integer.parseInt(scanner.next());
+			if(!scanner.hasNextInt()) {
+				scanner.close();
+				break;
+			}
         	int level = Integer.parseInt(scanner.next());
-        	
-        	mapping[level][row][column] = hi;
+        	if (row < 0 || row >= rows || col < 0 || col >= columns || level < 0 || level >= levels) {
+                scanner.close();
+                throw new IncompleteMapException("Coordinate not in bounds");
+            }
+        	mapping[level][row][column] = character;
         }
         
         for(int i = 0; i<levels; i++) {
