@@ -121,7 +121,8 @@ public class MazeSolver {
     }
 
     public static List<Position> solveOptimal(String[][][] map) {
-        return solveQueue(map);
+        return null;
+        
     }
 
     public static Position findChar(String[][][] map, char target) {
