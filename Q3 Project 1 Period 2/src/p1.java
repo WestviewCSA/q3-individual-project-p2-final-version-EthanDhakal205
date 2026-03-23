@@ -18,7 +18,7 @@ public class p1 {
 
         try {
             if (args.length == 0) {
-                throw new IllegalCommandLineInputsException("No arguments provided. You can put --Help");
+                throw new IllegalCommandLineInputException("No arguments provided. You can put --Help");
             }
             //last argument is the map file path 
             mapFile = args[args.length - 1];
@@ -48,7 +48,7 @@ public class p1 {
                         helpFlag = true; 
                         break;
                     default:
-                        throw new IllegalCommandLineInputsException("Unknown argument: " + args[i]);
+                        throw new IllegalCommandLineInputException("Unknown argument: " + args[i]);
                 }
             }
 
@@ -60,11 +60,11 @@ public class p1 {
             //only one of --Stack, --Queue, --Opt can be set at time
             int modeCount = (stackBase ? 1 : 0) + (queueBase ? 1 : 0) + (optimal ? 1 : 0);
             if (modeCount != 1) {
-                throw new IllegalCommandLineInputsException("--Stack, --Queue, or --Opt must be chosen.");
+                throw new IllegalCommandLineInputException("--Stack, --Queue, or --Opt must be chosen.");
             }
 
         } 
-        catch (IllegalCommandLineInputsException e) {
+        catch (IllegalCommandLineInputException e) {
             System.err.println("Command Line Error" + e.getMessage());
             System.exit(-1);
         }
