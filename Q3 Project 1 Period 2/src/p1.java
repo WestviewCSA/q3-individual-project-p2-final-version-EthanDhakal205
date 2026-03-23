@@ -2,7 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 //this class has the main method
 //comand line arguments are here and it runs the specific algorithm given
-public class P1 {
+public class p1 {
 
     public static void main(String[] args) {
 
