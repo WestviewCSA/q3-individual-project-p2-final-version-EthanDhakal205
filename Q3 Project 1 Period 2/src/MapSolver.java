@@ -1,10 +1,11 @@
 import java.util.*;
-
+//has three maze solving algorithms
 public class MazeSolver {
-
+    //movement directions include north, south, east, and west
     private static final int[] DR = {-1, 1, 0, 0};
     private static final int[] DC = {0, 0, 1, -1};
 
+    //Queue based breadth first search
     public static List<Position> solveQueue(String[][][] map) {
         Position start = findChar(map, 'W');
         if (start == null) {
@@ -45,7 +46,7 @@ public class MazeSolver {
                 }
 
                 visited[nl][nr][nc] = true;
-
+                //if it is a walkway, enqueue the same position on the level
                 if (cell.equals("|")) {
                     queue.add(next);
                     int nextLevel = nl + 1;
@@ -63,6 +64,7 @@ public class MazeSolver {
         return null;
     }
 
+    //stack based depth first search
     public static List<Position> solveStack(String[][][] map) {
         Position start = findChar(map, 'W');
         if (start == null) {
@@ -103,7 +105,7 @@ public class MazeSolver {
                 }
 
                 visited[nl][nr][nc] = true;
-
+                //walkway psuhes the same position on the next level
                 if (cell.equals("|")) {
                     stack.push(next);
                     int nextLevel = nl + 1;
@@ -121,6 +123,7 @@ public class MazeSolver {
     }
 
     //a* search alg
+    //f = g+h, where g is the steps that are taken and h is the Manhattan distance to the goal.
     public static List<Position> solveOptimal(String[][][] map) {
         Position start = findChar(map,'W');
         Position goal = findChar(map,'$');
@@ -131,7 +134,8 @@ public class MazeSolver {
         int levels = map.length;
         int rows = map[0].length;
         int cols = map[0][0].length;
-
+        //gScore tracks cheapest known cost to reach each cell
+        //it gets initialized to a large number that is not yet reached
         int[][][] gScore = new int[levels][rows][cols];
         for(int[][] level : gScore) {
             for(int[] row : level) {
@@ -140,6 +144,7 @@ public class MazeSolver {
             }
         }
         gScore[start.level][start.row][start.col] = 0;
+        //priorityqueue will ord3r positions by f = g+h from the lowest
         PriorityQueue<Position> open = new PriorityQueue<>(new Comparator<Position>() {
             public int compare(Position a, Position b) {
                 return (a.g + ManhattanDistance(a,goal)) - (b.g + ManhattanDistance(b,goal));
@@ -150,9 +155,11 @@ public class MazeSolver {
 
         while(!open.isEmpty()) {
             Position curr = open.poll();
+            //when goal is reached
             if(curr.row == goal.row && curr.col == goal.col && curr.level == goal.level) {
                 return buildPath(curr);
             }
+            //skip if there is a cheaper path
             if(curr.g > gScore[curr.level][curr.row][curr.col]) {
                 continue;
             }
@@ -168,10 +175,12 @@ public class MazeSolver {
                     continue;
                 }
                 int newG = curr.g+1;
+                //only update if a cheaper way to reach the cell is found
                 if(newG < gScore[nl][nr][nc]) {
                     gScore[nl][nr][nc] = newG;
                     Position next = new Position(nl,nr,nc,curr,newG);
                     open.add(next);
+                    //when there is a walkway, add the same position on the next level
                     if(cell.equals("|")) {
                         int nextLevel = nl + 1;
                         if(nextLevel<levels && newG+1 < gScore[nextLevel][nr][nc]) {
@@ -186,9 +195,13 @@ public class MazeSolver {
         return null;
         
     }
+    //Estimates steps to goal ignoring walls
+    //unlike regular a*, diagonals are not counted
     private static int ManhattanDistance(Position p, Position goal) {
         return Math.abs(p.row - goal.row) + Math.abs(p.col - goal.col);
     }
+
+    //searches the 3d map for the first occurrence of a given character
 
     public static Position findChar(String[][][] map, char target) {
         String t = String.valueOf(target);
@@ -203,11 +216,13 @@ public class MazeSolver {
         }
         return null;
     }
-
+    //returns true if level, row, and col are in the map boundary
     private static boolean inBounds(int level, int row, int col, int levels, int rows, int cols) {
         return level >= 0 && level < levels && row >= 0 && row < rows && col >= 0 && col < cols;
     }
 
+    //reconstructs the path from start to goal by going through parent links
+    //also returns the path as a list from index 0 to goal
     private static List<Position> buildPath(Position goal) {
         LinkedList<Position> path = new LinkedList<>();
         Position curr = goal;
@@ -217,7 +232,7 @@ public class MazeSolver {
         }
         return path;
     }
-
+    //copries map and marks positions
     public static String[][][] applyPathToMap(String[][][] original, List<Position> path) {
         int levels = original.length;
         int rows = original[0].length;
