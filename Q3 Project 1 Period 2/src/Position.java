@@ -3,12 +3,14 @@ public class Position {
     public int row;
     public int col;
     public Position parent;
-
+    public int g;
+    
     public Position(int level, int row, int col, Position parent) {
         this.level = level;
         this.row = row;
         this.col = col;
         this.parent = parent;
+        this.g = 0;
     }
     public boolean equals(Position o) {
       if(this==o) {
