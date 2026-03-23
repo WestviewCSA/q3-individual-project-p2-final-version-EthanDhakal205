@@ -120,9 +120,74 @@ public class MazeSolver {
         return null;
     }
 
+    //a* search alg
     public static List<Position> solveOptimal(String[][][] map) {
+        Position start = findChar(map,'W');
+        Position goal = findChar(map,'$');
+        if(start==null || goal == null) {
+            return null;
+        }
+
+        int levels = map.length;
+        int rows = map[0].length;
+        int cols = map[0][0].length;
+
+        int[][][] gScore = new int[levels][rows][cols];
+        for(int[][] level : gScore) {
+            for(int[] row : level) {
+                //Max value
+                Arrays.fill(row, 2147483647);
+            }
+        }
+        gScore[start.level][start.row][start.col] = 0;
+        PriorityQueue<Position> open = new PriorityQueue<>(new Comparator<Position>() {
+            public int compare(Position a, Position b) {
+                return (a.g + ManhattanDistance(a,goal)) - (b.g + ManhattanDistance(b,goal));
+            }
+        });
+        start.g=0;
+        open.add(start);
+
+        while(!open.isEmpty()) {
+            Position curr = open.poll();
+            if(curr.row == goal.row && curr.col == goal.col && curr.level == goal.level) {
+                return buildPath(curr);
+            }
+            if(curr.g > gScore[curr.level][curr.row][curr.col]) {
+                continue;
+            }
+            for(int d = 0; d<4; d++) {
+                int nr = curr.row + DR[d];
+                int nc = curr.col + DC[d];
+                int nl = curr.level; 
+                if(!inBounds(nl,nr,nc,levels,rows,cols)) {
+                    continue;
+                }
+                String cell = map[nl][nr][nc];
+                if(cell.equals("@")) {
+                    continue;
+                }
+                int newG = curr.g+1;
+                if(newG < gScore[nl][nr][nc]) {
+                    gScore[nl][nr][nc] = newG;
+                    Position next = new Position(nl,nr,nc,curr,newG);
+                    open.add(next);
+                    if(cell.equals("|")) {
+                        int nextLevel = nl + 1;
+                        if(nextLevel<levels && newG+1 < gScore[nextLevel][nr][nc]) {
+                            gScore[nextLevel][nr][nc] = newG+1;
+                            open.add(new Position(nextLevel, nr,nc, next, newG+1));
+                        }
+                        
+                    }
+                }
+            }
+        }
         return null;
         
+    }
+    private static int ManhattanDistance(Position p, Position goal) {
+        return Math.abs(p.row - goal.row) + Math.abs(p.col - goal.col);
     }
 
     public static Position findChar(String[][][] map, char target) {
