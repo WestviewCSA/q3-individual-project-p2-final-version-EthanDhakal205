@@ -2,12 +2,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+//reads text and coordinate based maps from files
 public class MapReading {
+	//all valid characters
 	private static final String fine_char = ".@W$|+";
-	
+
+	//reads textbased map file
 	public static String[][][] getTextBasedMap(String fileName) throws FileNotFoundException, IncorrectMapFormatException, IncompleteMapException, IllegalMapCharactersException {
 		File file = new File(fileName);
         Scanner scanner = new Scanner(file);
+
+		//first line needs to have three positive integers withs rows cols and levels
 		if(!scanner.hasNextInt()) {
 			scanner.close();
 			throw new IncorrectMapFormatException("Does not work.");
@@ -27,6 +32,8 @@ public class MapReading {
 			scanner.close();
 			throw new IncorrectMapFormatException("Map dimensions must be positive int.");
 		}
+
+		//3d array with levels rows columns
         String[][][] mapping = new String[levels][rows][columns];
         for(int i = 0; i<levels; i++) {
         	for(int j = 0; j<rows; j++) {
@@ -53,7 +60,10 @@ public class MapReading {
         return mapping;
 		
 	}
+	//coordinate based map reading file
+	//unspecified cell atuomatically gets set to a "."
 	public static String[][][] getCoordinateBasedMap(String fileName) throws FileNotFoundException {
+		
 		File file = new File(fileName);
         Scanner scanner = new Scanner(file);
 		if(!scanner.hasNextInt()) {
@@ -77,7 +87,7 @@ public class MapReading {
 		}
         String[][][] mapping = new String[levels][rows][columns];
         
-        
+        //read each coordinate entry and ultimately place it in the array
         while(scanner.hasNext()) {
         	String character = scanner.next();
 			if(!fine_char.contains(character)) {
@@ -99,13 +109,15 @@ public class MapReading {
 				break;
 			}
         	int level = Integer.parseInt(scanner.next());
+			//coordinates must be int the map bound
         	if (row < 0 || row >= rows || col < 0 || col >= columns || level < 0 || level >= levels) {
                 scanner.close();
                 throw new IncompleteMapException("Coordinate not in bounds");
             }
         	mapping[level][row][column] = character;
         }
-        
+
+		//fill unspecified cells with a dot
         for(int i = 0; i<levels; i++) {
         	for(int j = 0; j<rows; j++) {
         		for(int h = 0; h<columns; h++) {
@@ -119,6 +131,7 @@ public class MapReading {
         return mapping;
 		
 	}
+	//prints either the solved or unsolved map in the text based format
 	public static void printMap(String[][][] map) {
 		for(int i = 0; i<map.length; i++) {
 			for(int j = 0; j<map[i].length; j++) {
