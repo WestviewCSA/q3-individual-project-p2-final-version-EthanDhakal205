@@ -8,7 +8,7 @@ public class MapReading {
 	private static final String fine_char = ".@W$|+";
 
 	//reads textbased map file
-	public static String[][][] getTextBasedMap(String fileName) throws FileNotFoundException, IncorrectMapFormatException, IncompleteMapException, IllegalMapCharactersException {
+	public static String[][][] getTextBasedMap(String fileName) throws FileNotFoundException, IncorrectMapFormatException, IncompleteMapException, IllegalMapCharacterException {
 		File file = new File(fileName);
         Scanner scanner = new Scanner(file);
 
@@ -62,7 +62,7 @@ public class MapReading {
 	}
 	//coordinate based map reading file
 	//unspecified cell atuomatically gets set to a "."
-	public static String[][][] getCoordinateBasedMap(String fileName) throws FileNotFoundException {
+	public static String[][][] getCoordinateBasedMap(String fileName) throws FileNotFoundException,IncorrectMapFormatException,IllegalMapCharacterException,IncompleteMapException {
 		
 		File file = new File(fileName);
         Scanner scanner = new Scanner(file);
@@ -110,7 +110,7 @@ public class MapReading {
 			}
         	int level = Integer.parseInt(scanner.next());
 			//coordinates must be int the map bound
-        	if (row < 0 || row >= rows || col < 0 || col >= columns || level < 0 || level >= levels) {
+        	if (row < 0 || row >= rows || column < 0 || column >= columns || level < 0 || level >= levels) {
                 scanner.close();
                 throw new IncompleteMapException("Coordinate not in bounds");
             }

@@ -1,6 +1,6 @@
 import java.util.*;
 //has three maze solving algorithms
-public class MazeSolver {
+public class MapSolver {
     //movement directions include north, south, east, and west
     private static final int[] DR = {-1, 1, 0, 0};
     private static final int[] DC = {0, 0, 1, -1};

@@ -102,13 +102,13 @@ public class p1 {
         //run the specific algo
         List<Position> path = null;
         if (stackBase) {
-            path = MazeSolver.solveStack(map);
+            path = MapSolver.solveStack(map);
         } 
         else if (queueBase) {
-            path = MazeSolver.solveQueue(map);
+            path = MapSolver.solveQueue(map);
         } 
         else {
-            path = MazeSolver.solveOptimal(map);
+            path = MapSolver.solveOptimal(map);
         }
 
         long endTime = System.nanoTime();
@@ -130,7 +130,7 @@ public class p1 {
             } 
             else {
                 //text based output
-                String[][][] solvedMap = MazeSolver.applyPathToMap(map, path);
+                String[][][] solvedMap = MapSolver.applyPathToMap(map, path);
                 MapReading.printMap(solvedMap);
             }
         }
